@@ -280,7 +280,7 @@ def guid_subjID_check(df_flat, qt_dr_1_0, col_guid, col_assocguid, col_subjID):
            subjID = list_subjID[i]
            temp = df_temp[df_temp[col_subjID]==subjID]
            temp = temp[-temp.duplicated()]
-           df_subjID_guid = df_subjID_guid.append(temp,ignore_index = False)
+           df_subjID_guid = pd.concat([df_subjID_guid, temp],ignore_index = False)
            
        # find GUIDs with multiple SubjIDs  
        cnt_GUID = df_temp.groupby(col_guid)[col_subjID].unique().apply(len)
@@ -290,7 +290,7 @@ def guid_subjID_check(df_flat, qt_dr_1_0, col_guid, col_assocguid, col_subjID):
            GUID = list_GUID[i]
            temp = df_temp[df_temp[col_guid]==GUID]
            temp = temp[-temp.duplicated()]
-           df_guid_subjID = df_guid_subjID.append(df_temp[df_temp[col_guid]==GUID],ignore_index = False)
+           df_guid_subjID = pd.concat([df_guid_subjID, df_temp[df_temp[col_guid]==GUID]],ignore_index = False)
     else:
        # find SubjIDs with multiple GUIDs
        cnt_subjID = df_temp.groupby(col_subjID).nunique()
@@ -300,7 +300,7 @@ def guid_subjID_check(df_flat, qt_dr_1_0, col_guid, col_assocguid, col_subjID):
            subjID = list_subjID[i]
            temp = df_temp[df_temp[col_subjID]==subjID]
            temp = temp[-temp.duplicated(subset = df_temp.drop('record', axis = 1).columns)]
-           df_subjID_guid = df_subjID_guid.append(temp,ignore_index = False)
+           df_subjID_guid = pd.concat([df_subjID_guid, temp], ignore_index = False)
            
        # find GUIDs with multiple SubjIDs  
        cnt_GUID = df_temp.groupby(col_guid).nunique()
@@ -310,7 +310,7 @@ def guid_subjID_check(df_flat, qt_dr_1_0, col_guid, col_assocguid, col_subjID):
            GUID = list_GUID[i]
            temp = df_temp[df_temp[col_guid]==GUID]
            temp = temp[-temp.duplicated(subset = df_temp.drop('record', axis = 1).columns)]
-           df_guid_subjID = df_guid_subjID.append(df_temp[df_temp[col_guid]==GUID],ignore_index = False)
+           df_guid_subjID = pd.concat([df_guid_subjID, df_temp[df_temp[col_guid]==GUID]],ignore_index = False)
        
     return(df_guid_subjID, df_subjID_guid)
 
